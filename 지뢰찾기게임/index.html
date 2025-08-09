@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>비행기 지뢰찾기</title>
+<style>
+    body {
+        font-family: sans-serif;
+        text-align: center;
+        background: #f0f0f0;
+    }
+    #board {
+        display: grid;
+        grid-template-columns: repeat(8, 40px);
+        gap: 2px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .cell {
+        width: 40px;
+        height: 40px;
+        background: #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+    }
+    .revealed {
+        background: #eee;
+        cursor: default;
+    }
+    .mine {
+        background: #eee;
+        padding: 0;
+    }
+    .mine img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+</style>
+</head>
+<body>
+
+<h1>비행기 지뢰찾기 ✈️</h1>
+<p>클릭해서 비행기를 피해보세요!</p>
+<div id="board"></div>
+
+<script>
+    const boardSize = 8;
+    const mineCount = 10;
+    const planes = ["plane1.png", "plane2.png", "plane3.png"];
+    const board = [];
+    const boardElement = document.getElementById("board");
+
+    // 보드 생성
+    function createBoard() {
+        // 빈 배열 초기화
+        for (let y = 0; y < boardSize; y++) {
+            board[y] = [];
+            for (let x = 0; x < boardSize; x++) {
+                board[y][x] = { mine: false, revealed: false, count: 0 };
+            }
+        }
+
+        // 지뢰 배치
+        let placed = 0;
+        while (placed < mineCount) {
+            let rx = Math.floor(Math.random() * boardSize);
+            let ry = Math.floor(Math.random() * boardSize);
+            if (!board[ry][rx].mine) {
+                board[ry][rx].mine = true;
+                placed++;
+            }
+        }
+
+        // 숫자 계산
+        for (let y = 0; y < boardSize; y++) {
+            for (let x = 0; x < boardSize; x++) {
